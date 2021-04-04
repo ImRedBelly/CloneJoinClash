@@ -1,73 +1,62 @@
-﻿using System.Collections;
+﻿using UnityEngine;
+using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerMovement : MonoBehaviour
 {
+    public CharacterController controller;
     public Animator animator;
-    public Transform endPoint;
     public float speed;
 
-    Rigidbody rb;
-
-    private void Awake()
-    {
-        rb = GetComponent<Rigidbody>();
-    }
+    Vector3 direction;
+    private float gravity;
+    private float jumpHeight = 3;
+    private float gravityScale = 1;
     void Update()
     {
-        float positionMouseX = Input.mousePosition.x;
-
-
-        //if (Input.GetKey(KeyCode.A))
-        //{
-        //    transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0, -100, 0), Time.deltaTime * 1.5f);
-        //    StopAllCoroutines();
-        //}
-        //if (Input.GetKey(KeyCode.D))
-        //{
-        //    transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0, 100, 0), Time.deltaTime * 1.5f);
-        //    StopAllCoroutines();
-        //}
-
-        if (Input.GetKeyUp(KeyCode.D) || (Input.GetKeyUp(KeyCode.A)))
-        {
-
-        }
-
-
         if (Input.GetMouseButton(0))
         {
-            rb.velocity = transform.forward * speed;
+            direction = transform.forward;
             animator.SetBool("Run", true);
-
-            if (positionMouseX < Screen.width / 3)
-            {
-                transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0, -100, 0), Time.deltaTime * 1.5f);
-                StartCoroutine(RunStraight());
-            }
-            else if (positionMouseX > (Screen.width / 3) * 2)
-            {
-                transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0, 100, 0), Time.deltaTime * 1.5f);
-                StartCoroutine(RunStraight());
-            }
         }
-
-
-        if (Input.GetMouseButtonUp(0))
+        else
         {
+            direction = Vector3.zero;
             animator.SetBool("Run", false);
-            rb.velocity = Vector3.zero;
         }
-    }
-    IEnumerator RunStraight()
-    {
-        yield return new WaitForSeconds(1);
-
-        while (transform.rotation.y != 0)
+        if (controller.isGrounded)
         {
-            yield return new WaitForSeconds(0.01f);
-            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0, 0, 0), Time.deltaTime * 2);
+            gravity = -0.1f;
+            if (Input.GetButtonDown("Jump"))
+            {
+                gravity = jumpHeight;
+                animator.SetTrigger("Jump");
+            }
+        }
+        else
+        {
+            gravity += gravityScale * Physics.gravity.y * Time.deltaTime;
+        }
+
+
+        if (Input.mousePosition.x < Screen.width / 3)
+            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0, -100, 0), Time.deltaTime);
+
+        else if (Input.mousePosition.x > (Screen.width / 3) * 2)
+            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0, 100, 0), Time.deltaTime);
+
+        else
+            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0, 0, 0), Time.deltaTime * 1.5f);
+
+
+        direction.y = gravity;
+        controller.Move(direction * speed * Time.deltaTime);
+
+
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            SceneManager.LoadScene(0);
         }
     }
 }

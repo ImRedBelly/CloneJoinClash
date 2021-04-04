@@ -57,3 +57,20 @@ The following packages were updated:
   com.unity.test-framework from version 1.1.22 to 1.1.24
   com.unity.textmeshpro from version 2.1.1 to 3.0.1
   com.unity.timeline from version 1.2.18 to 1.4.6
+
+=== Sun Apr  4 19:25:08 2021
+
+Packages were changed.
+Update Mode: mergeDefaultDependencies
+
+The following packages were added:
+  com.unity.2d.sprite@1.0.0
+  com.unity.2d.tilemap@1.0.0
+  com.unity.addressables@1.8.4
+  com.unity.ads@3.4.7
+  com.unity.analytics@3.3.5
+  com.unity.ext.nunit@1.0.0
+  com.unity.mobile.android-logcat@1.1.1
+  com.unity.purchasing@2.0.6
+  com.unity.render-pipelines.universal@8.2.0
+  com.unity.shadergraph@8.2.0
