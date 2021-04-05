@@ -5,14 +5,28 @@ using UnityEngine.SceneManagement;
 
 public class PlayerMovement : MonoBehaviour
 {
+    public static PlayerMovement instance;
     public CharacterController controller;
     public Animator animator;
     public float speed;
 
     Vector3 direction;
+    public bool isJump = false;
     private float gravity;
     private float jumpHeight = 3;
     private float gravityScale = 1;
+
+    [Header("Friend")]
+    public List<GameObject> friends;
+    public List<Animator> animatorFriend;
+    private void Start()
+    {
+        if (instance == null) instance = this;
+    }
+
+
+
+
     void Update()
     {
         if (Input.GetMouseButton(0))
@@ -28,14 +42,14 @@ public class PlayerMovement : MonoBehaviour
         if (controller.isGrounded)
         {
             gravity = -0.1f;
-            if (Input.GetButtonDown("Jump"))
+            if (Input.GetButtonDown("Jump") || isJump)
             {
-                gravity = jumpHeight;
-                animator.SetTrigger("Jump");
+                Jump();
             }
         }
         else
         {
+            isJump = false;
             gravity += gravityScale * Physics.gravity.y * Time.deltaTime;
         }
 
@@ -59,4 +73,15 @@ public class PlayerMovement : MonoBehaviour
             SceneManager.LoadScene(0);
         }
     }
+
+    public void Jump()
+    {
+        gravity = jumpHeight;
+        animator.SetTrigger("Jump");
+
+
+    }
 }
+
+
+

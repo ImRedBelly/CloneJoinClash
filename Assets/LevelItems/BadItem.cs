@@ -11,5 +11,9 @@ public class BadItem : MonoBehaviour
         {
             SceneManager.LoadScene(0);
         }
+        if (other.gameObject.CompareTag("ClonePlayer"))
+        {
+            Destroy(other.gameObject);
+        }
     }
 }
