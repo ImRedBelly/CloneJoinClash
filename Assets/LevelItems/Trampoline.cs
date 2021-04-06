@@ -13,7 +13,7 @@ public class Trampoline : MonoBehaviour
         }
         if (other.gameObject.CompareTag("ClonePlayer"))
         {
-            other.GetComponent<Friend>().isJump = true;
+            other.GetComponent<Friend>().InvokeJump();
         }
     }
 }

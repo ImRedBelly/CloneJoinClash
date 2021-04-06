@@ -6,42 +6,95 @@ public class Friend : MonoBehaviour
 {
     public CharacterController controller;
     public Animator animator;
-    
-    public float speed;
 
     [Header("Setting LayerMask")]
     public LayerMask playerMask;
-    string startLayer = "Default";
     string collisionLayer = "Player";
+    public float serachRadiusPlayer = 10;
 
     [Header("Setting Running")]
-    public Vector3 difference;
-
+    public float speed;
+    GameObject badBoy;
     Vector3 direction;
-    bool isRunning;
     bool isPlayerNearby;
-    public float serachRadius = 5;
+    bool isBadBoyNearby;
 
-    public bool isJump = false;
+    [Header("Setting Jump")]
+    bool isJump = false;
     private float gravity;
     private float jumpHeight = 3;
     private float gravityScale = 1;
+
+    FriendState friendState;
+    enum FriendState
+    {
+        Idle,
+        Run,
+        Parting
+    }
     private void Start()
     {
-        gameObject.layer = LayerMask.NameToLayer(startLayer);
+        GameManager.instance.AddFriend(gameObject);
+        friendState = FriendState.Idle;
     }
     private void Update()
     {
-        isPlayerNearby = Physics.CheckSphere(transform.position, serachRadius, playerMask);
-
         direction = PlayerMovement.instance.transform.forward;
 
+        switch (friendState)
+        {
+            case FriendState.Idle:
+                isPlayerNearby = Physics.CheckSphere(transform.position, serachRadiusPlayer, playerMask);
+                if (isPlayerNearby)
+                {
+                    friendState = FriendState.Run;
+                    gameObject.layer = LayerMask.NameToLayer(collisionLayer);
+                }
+                break;
+
+            case FriendState.Run:
+                Jump();
+                direction.y = gravity;
+                Run();
+
+                if (isBadBoyNearby)
+                    friendState = FriendState.Parting;
+
+                break;
+
+            case FriendState.Parting:
+                Parting();
+                break;
+        }
+    }
+    void Run()
+    {
+        if (Input.GetMouseButton(0))
+        {
+            animator.SetBool("Run", true);
+        }
+        else
+        {
+            direction = Vector3.zero;
+            animator.SetBool("Run", false);
+        }
+
+        transform.rotation = PlayerMovement.instance.transform.rotation;
+        controller.Move(direction * speed * Time.deltaTime);
+    }
+    public void InvokeJump()
+    {
+        isJump = true;
+    }
+    void Jump()
+    {
         if (controller.isGrounded)
         {
             gravity = -0.1f;
-            if (Input.GetButtonDown("Jump") || isJump)
+            if (isJump)
             {
-                Jump();
+                gravity = jumpHeight;
+                animator.SetTrigger("Jump");
             }
         }
         else
@@ -49,36 +102,18 @@ public class Friend : MonoBehaviour
             isJump = false;
             gravity += gravityScale * Physics.gravity.y * Time.deltaTime;
         }
-        if (!isRunning && isPlayerNearby)
-        {
-            isRunning = true;
-
-            gameObject.layer = LayerMask.NameToLayer(collisionLayer);
-        }
-
-        direction.y = gravity;
-
-        if (isRunning && Input.GetMouseButton(0))
-        {
-            animator.SetBool("Run", true);
-            transform.rotation = PlayerMovement.instance.transform.rotation;
-            controller.Move(direction * speed * Time.deltaTime);
-        }
-        else if (isRunning && !Input.GetMouseButton(0))
-        {
-            direction = Vector3.zero;
-            controller.Move(direction * speed * Time.deltaTime);
-            animator.SetBool("Run", false);
-        }
     }
-    public void Jump()
+    void Parting()
     {
-        gravity = jumpHeight;
-        animator.SetTrigger("Jump");
+        var looAt = badBoy.transform.position - transform.position;
+        transform.forward = looAt;
+        direction = Vector3.zero;
+        animator.SetTrigger("Dance");
     }
-    private void OnDrawGizmos()
+    public void You—aught(GameObject badBoyObject)
     {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, serachRadius);
+        isBadBoyNearby = true;
+        badBoy = badBoyObject;
     }
+
 }

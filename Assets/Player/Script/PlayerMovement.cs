@@ -8,23 +8,21 @@ public class PlayerMovement : MonoBehaviour
     public static PlayerMovement instance;
     public CharacterController controller;
     public Animator animator;
+
+    [Header("Setting Running")]
+    Vector3 direction;
     public float speed;
 
-    Vector3 direction;
+    [Header("Setting Jump")]
     public bool isJump = false;
     private float gravity;
     private float jumpHeight = 3;
     private float gravityScale = 1;
 
-    [Header("Friend")]
-    public List<GameObject> friends;
-    public List<Animator> animatorFriend;
     private void Start()
     {
         if (instance == null) instance = this;
     }
-
-
 
 
     void Update()
@@ -42,7 +40,7 @@ public class PlayerMovement : MonoBehaviour
         if (controller.isGrounded)
         {
             gravity = -0.1f;
-            if (Input.GetButtonDown("Jump") || isJump)
+            if (isJump)
             {
                 Jump();
             }
@@ -69,18 +67,19 @@ public class PlayerMovement : MonoBehaviour
 
 
         if (Input.GetKeyDown(KeyCode.R))
-        {
             SceneManager.LoadScene(0);
-        }
-    }
 
+    }
+    public void YouСaught()
+    {
+        SceneManager.LoadScene(0);
+    }
     public void Jump()
     {
         gravity = jumpHeight;
         animator.SetTrigger("Jump");
-
-
     }
+
 }
 
 
