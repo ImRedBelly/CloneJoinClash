@@ -34,7 +34,6 @@ public class Friend : MonoBehaviour
     }
     private void Start()
     {
-        GameManager.instance.AddFriend(gameObject);
         friendState = FriendState.Idle;
     }
     private void Update()
@@ -48,6 +47,7 @@ public class Friend : MonoBehaviour
                 if (isPlayerNearby)
                 {
                     friendState = FriendState.Run;
+                    GameManager.instance.AddFriend(gameObject);
                     gameObject.layer = LayerMask.NameToLayer(collisionLayer);
                 }
                 break;
@@ -112,8 +112,25 @@ public class Friend : MonoBehaviour
     }
     public void YouÑaught(GameObject badBoyObject)
     {
+        GameManager.instance.RemoveFriend(gameObject);
         isBadBoyNearby = true;
         badBoy = badBoyObject;
+        StartCoroutine(Dead(1));
     }
 
+    public IEnumerator Dead(float time)
+    {
+        var scale = transform.localScale;
+        yield return new WaitForSeconds(time);
+        while (scale.x > 0.01f)
+        {
+            yield return new WaitForSeconds(0.01f);
+            scale.x -= 0.05f;
+            scale.y -= 0.05f;
+            scale.z -= 0.05f;
+            transform.localScale = scale;
+        }
+        yield return new WaitForSeconds(1);
+        Destroy(gameObject);
+    }
 }

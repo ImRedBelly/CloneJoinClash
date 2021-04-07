@@ -9,7 +9,6 @@ public class GameManager : MonoBehaviour
 
     [Header("Poeple")]
     public List<GameObject> friends;
-    public List<GameObject> badBoys;
 
     private void Awake()
     {
@@ -19,8 +18,22 @@ public class GameManager : MonoBehaviour
     {
         friends.Add(friend);
     }
-    public void AddBadBoy(GameObject badBoy)
+    public void RemoveFriend(GameObject friend)
     {
-        badBoys.Add(badBoy);
+        friends.Remove(friend);
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Player"))
+        {
+            if (friends.Count == 0)
+            {
+                print("You Lose");
+            }
+            else
+            {
+                print("You Win");
+            }
+        }
     }
 }

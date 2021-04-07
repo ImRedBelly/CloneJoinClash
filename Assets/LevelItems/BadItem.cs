@@ -13,7 +13,7 @@ public class BadItem : MonoBehaviour
         }
         if (other.gameObject.CompareTag("ClonePlayer"))
         {
-            Destroy(other.gameObject);
+            StartCoroutine(other.GetComponent<Friend>().Dead(0.1f));
         }
     }
 }
