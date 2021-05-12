@@ -38,8 +38,6 @@ public class Friend : MonoBehaviour
     }
     private void Update()
     {
-        direction = PlayerMovement.instance.transform.forward;
-
         switch (friendState)
         {
             case FriendState.Idle:
@@ -47,7 +45,7 @@ public class Friend : MonoBehaviour
                 if (isPlayerNearby)
                 {
                     friendState = FriendState.Run;
-                    GameManager.instance.AddFriend(gameObject);
+                   // GameManager.instance.AddFriend(gameObject);
                     gameObject.layer = LayerMask.NameToLayer(collisionLayer);
                 }
                 break;
@@ -79,7 +77,6 @@ public class Friend : MonoBehaviour
             animator.SetBool("Run", false);
         }
 
-        transform.rotation = PlayerMovement.instance.transform.rotation;
         controller.Move(direction * speed * Time.deltaTime);
     }
     public void InvokeJump()

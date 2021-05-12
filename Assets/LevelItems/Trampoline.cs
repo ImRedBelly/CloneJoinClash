@@ -9,11 +9,11 @@ public class Trampoline : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            PlayerMovement.instance.isJump = true;
+            other.GetComponent<PlayerMovement>().isJump = true;
         }
         if (other.gameObject.CompareTag("ClonePlayer"))
         {
-            other.GetComponent<Friend>().InvokeJump();
+            other.GetComponent<FriendMovement>().isJump = true;
         }
     }
 }

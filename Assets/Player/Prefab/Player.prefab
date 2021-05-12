@@ -63,29 +63,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15b87f664a4f6d045ad76b1b6dbb93b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  controller: {fileID: 6333958179405067551}
-  animator: {fileID: 6333958179133523452}
-  speed: 50
+  controller: {fileID: 0}
+  animator: {fileID: 0}
+  speed: 70
+  deltaX: 0
+  direction: {x: 0, y: 0, z: 0}
   isJump: 0
---- !u!95 &6333958179133523452
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6568452460500796370}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 9233d7680dae1674581a9f0b744c249b, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!82 &7973606452465978317
 AudioSource:
   m_ObjectHideFlags: 0
@@ -182,6 +165,25 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!95 &6333958179133523452
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6568452460500796370}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 9233d7680dae1674581a9f0b744c249b, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1001 &6333958179583295107
 PrefabInstance:
   m_ObjectHideFlags: 0
